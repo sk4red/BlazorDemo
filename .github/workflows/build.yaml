@@ -17,8 +17,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore src/BlazorApp.csproj
     - name: Build code
-      run: dotnet build src/BlazorApp.csproj --configuration Release --no-   
-      restore
+      run: dotnet build src/BlazorApp.csproj --configuration Release --no-restore
     - name: Publish application
       run: dotnet publish src/BlazorApp.csproj -c Release -o BlazorDemo
     - name: Upload Artifacts
