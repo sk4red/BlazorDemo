@@ -21,7 +21,6 @@ jobs:
 
   release:
     name: Create Github Release
-    if: contains(github.ref, 'tags/v') # works only version tagged
     needs: [test]
     runs-on: ubuntu-latest
     steps:
