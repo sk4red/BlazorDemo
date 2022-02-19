@@ -41,7 +41,7 @@ jobs:
     - name: Save Release URL File for publish
       uses: actions/upload-artifact@v1
       with:
-        name: release_url.txt
+        name: release_url
       
     
   publish:
@@ -57,8 +57,8 @@ jobs:
     - name: Load Release URL File from release job
       uses: actions/download-artifact@v1
       with:
-        name: release_url
-        path: release_url.txt
+        name: release_url.txt
+      
     - name: Setup .NET Core 5.0 (current)
       uses: actions/setup-dotnet@v1
       with:
