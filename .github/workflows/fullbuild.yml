@@ -72,6 +72,7 @@ jobs:
           # Build everything
           dotnet publish src/BlazorApp.csproj -c Release --self-contained -o "BlazorDemo"
           7z a -tzip "${BlazorDemo}.zip" "./${BlazorDemo}/*"
+          zip -r BlazorDemo.zip BlazorDemo
 
     - name: Get Release File Name & Upload URL
       id: get_release_info
