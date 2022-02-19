@@ -38,7 +38,7 @@ jobs:
         name: Release ${{ steps.tag_version.outputs.new_tag }}
         body: ${{ steps.tag_version.outputs.changelog }}
     - name: Output Release URL File
-      run: echo ${{ steps.create_release.outputs.upload_url }} > release_url.txt
+      run: echo ${{ steps.create_release.outputs.html_url }} > release_url.txt
     - name: Save Release URL File for publish
       uses: actions/upload-artifact@v1
       with:
