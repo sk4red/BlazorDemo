@@ -4,21 +4,17 @@ on: [push, pull_request]
 jobs:
   test:
     name: Debug Build & Test
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        dotnet-version: ['5.0.x']
+    runs-on: ubuntu-latest
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       NUGET_XMLDOC_MODE: skip
     steps:
     - uses: actions/checkout@v1
-    - name: Setup .NET Core ${{ matrix.dotnet-version }}
+    - name: Setup .NET Core 5.0.x
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{ matrix.dotnet-version }}
+        dotnet-version: 5.0.x
     - name: Build
       run: dotnet build src/BlazorApp.csproj -c Debug
    
@@ -56,9 +52,7 @@ jobs:
   publish:
     needs: [test, release]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        rid: [win-x64, linux-x64, osx-x64]
+ 
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
@@ -73,16 +67,20 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Build
+    - name: Build 
+      shell: bash
       run: |
-      dotnet publish -c Release --self-contained -r ${{ matrix.rid }} -o ./bin/${{ matrix.rid }}
-      zip -r ${{ matrix.rid }} ./src/bin/${{ matrix.rid }}
+         
+          # Build everything
+          dotnet publish -c Release --self-contained -o "BlazorDemo"
+          7z a -tzip "${BlazorDemo}.zip" "./${BlazorDemo}/*"
+
     - name: Get Release File Name & Upload URL
       id: get_release_info
       run: |
-      echo ::set-output name=file_name::${REPOSITORY_NAME##*/}-${TAG_REF_NAME##*/v} #ex. RepositoryName-1.0.0
-      value=`cat release_url.txt`
-      echo ::set-output name=upload_url::$value
+       echo ::set-output name=file_name::${REPOSITORY_NAME##*/}-${TAG_REF_NAME##*/v} #ex. RepositoryName-1.0.0
+       value=`cat release_url.txt`
+       echo ::set-output name=upload_url::$value
       env:
         TAG_REF_NAME: ${{ github.ref }}
         REPOSITORY_NAME: ${{ github.repository }}
