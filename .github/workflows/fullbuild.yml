@@ -73,7 +73,7 @@ jobs:
     - name: Get Release File Name & Upload URL
       id: get_release_info
       run: |
-       echo ::set-output name=file_name::'/home/runner/work/BlazorDemo/BlazorDemo/release_url.txt'
+       echo ::set-output name=file_name::${REPOSITORY_NAME##*/}-${TAG_REF_NAME##*/v} #ex. RepositoryName-1.0.0
        value=`cat release_url.txt`
        echo ::set-output name=upload_url::$value
       env:
