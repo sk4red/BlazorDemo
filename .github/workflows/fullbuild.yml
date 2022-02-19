@@ -41,8 +41,8 @@ jobs:
     - name: Save Release URL File for publish
       uses: actions/upload-artifact@v1
       with:
-        name: release_url
-        path: release_url.txt
+        name: release_url.txt
+      
     
   publish:
     needs: [test, release]
